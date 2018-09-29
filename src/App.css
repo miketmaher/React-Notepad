@@ -12,5 +12,9 @@ nav {
     .dashboard .sidebar .list-group-item {
       border-radius: 0;
       border-right: none; }
+      .dashboard .sidebar .list-group-item h5 {
+        display: inline; }
+      .dashboard .sidebar .list-group-item .fa {
+        float: right; }
       .dashboard .sidebar .list-group-item:first-child {
         border-top: none; }

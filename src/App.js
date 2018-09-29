@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 
@@ -27,7 +27,7 @@ class App extends Component {
                 <div className="col-md-9">
                   <Switch>
                     <Route exact path="/" component={AddNote} />
-                    <Route path="/edit/:id" component={EditNote} />
+                    <Route exact path="/note/edit/:id" component={EditNote} />
                   </Switch>
                 </div>
               </div>

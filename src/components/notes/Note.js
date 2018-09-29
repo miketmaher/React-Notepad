@@ -8,7 +8,7 @@ class Note extends Component {
     return (
       <React.Fragment>
         <h5>{title}</h5>
-        <Link to={`note/edit/${id}`}>
+        <Link to={`/note/edit/${id}`}>
           <i className="fa fa-chevron-right" />
         </Link>
       </React.Fragment>
@@ -17,8 +17,8 @@ class Note extends Component {
 }
 
 Note.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  title: PropTypes.string,
   detail: PropTypes.object
 };
 
