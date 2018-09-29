@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Note extends Component {
   render() {
+    const { id, title } = this.props.note;
     return (
       <React.Fragment>
         <h5>{title}</h5>
@@ -14,5 +15,11 @@ class Note extends Component {
     );
   }
 }
+
+Note.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  detail: PropTypes.object
+};
 
 export default Note;

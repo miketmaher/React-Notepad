@@ -1,0 +1,16 @@
+nav {
+  z-index: 10;
+  height: 10vh; }
+
+.dashboard {
+  height: 90vh; }
+  .dashboard .sidebar {
+    z-index: 9;
+    padding: 0;
+    height: 90vh;
+    border-right: 1px solid rgba(0, 0, 0, 0.125); }
+    .dashboard .sidebar .list-group-item {
+      border-radius: 0;
+      border-right: none; }
+      .dashboard .sidebar .list-group-item:first-child {
+        border-top: none; }

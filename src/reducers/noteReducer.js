@@ -1,4 +1,10 @@
-import { GET_NOTES } from '../actions/types';
+import {
+  GET_NOTES,
+  DELETE_NOTE,
+  ADD_NOTE,
+  GET_NOTE,
+  UPDATE_NOTE
+} from '../actions/types';
 
 const initialState = {
   notes: [],
@@ -11,6 +17,29 @@ export default function(state = initialState, action) {
       return {
         ...state,
         notes: action.payload
+      };
+    case GET_NOTE:
+      return {
+        ...state,
+        note: action.payload
+      };
+    case DELETE_NOTE:
+      return {
+        ...state,
+        notes: state.notes.filter(note => note.id !== action.payload)
+      };
+    case ADD_NOTE:
+      return {
+        ...state,
+        notes: [action.payload, ...state.notes]
+      };
+    case UPDATE_NOTE:
+      return {
+        ...state,
+        notes: state.notes.map(
+          note =>
+            note.id === action.payload.id ? (note = action.payload) : note
+        )
       };
     default:
       return state;
