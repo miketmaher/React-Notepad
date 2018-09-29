@@ -1,19 +1,40 @@
 import React, { Component } from 'react';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
 import Navbar from './components/layout/Navbar';
-import Dashboard from './components/layout/Dashboard';
+import Notes from './components/notes/Notes';
+import AddNote from './components/notes/AddNote';
+import EditNote from './components/notes/EditNote';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Navbar />
-        <Dashboard />
-      </div>
+      <Provider store={store}>
+        <Router>
+          <div className="App">
+            <Navbar />
+            <div className="container-fluid dashboard">
+              <div className="row">
+                <div className="col-md-3 sidebar">
+                  <Notes />
+                </div>
+                <div className="col-md-9">
+                  <Switch>
+                    <Route exact path="/" component={AddNote} />
+                    <Route path="/edit/:id" component={EditNote} />
+                  </Switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
