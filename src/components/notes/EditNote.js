@@ -8,7 +8,6 @@ import {
   EditorState,
   RichUtils,
   getDefaultKeyBinding,
-  ContentState,
   convertToRaw,
   convertFromRaw
 } from 'draft-js';
@@ -36,9 +35,11 @@ class EditNote extends Component {
 
   componentWillReceiveProps(nextProps, nextState) {
     const { id, title, note } = nextProps.note;
+    const blocks = convertFromRaw(note);
     this.setState({
       id,
-      title
+      title,
+      editorState: EditorState.createWithContent(blocks)
     });
   }
 
@@ -142,7 +143,7 @@ class EditNote extends Component {
 EditNote.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
-  note: PropTypes.string
+  note: PropTypes.object
 };
 
 const mapStateToProps = state => ({

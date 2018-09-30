@@ -21,8 +21,14 @@ export const getNote = id => async dispatch => {
   const res = await axios.get(`http://localhost:8080/notes/${id}`, {
     auth: auth
   });
+  const data = res.data.data;
+  const note = {
+    id: data.id,
+    title: data.title,
+    note: JSON.parse(res.data.data.note)
+  };
   dispatch({
     type: GET_NOTE,
-    payload: res.data.data
+    payload: note
   });
 };
