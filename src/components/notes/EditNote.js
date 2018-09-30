@@ -121,6 +121,7 @@ class EditNote extends Component {
               />
             </div>
           </div> */}
+          <div>{JSON.stringify(note)}</div>
           <button type="submit" className="btn btn-primary">
             <i className="fa fa-save" />
           </button>
