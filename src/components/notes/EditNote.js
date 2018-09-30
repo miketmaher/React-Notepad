@@ -16,19 +16,29 @@ import BlockStyleControls from '../editor/BlockStyleControls';
 import InlineStyleControls from '../editor/InlineStyleControls';
 
 class EditNote extends Component {
-  state = {
-    id: '',
-    title: '',
-    note: {},
-    editorState: EditorState.createEmpty()
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: '',
+      title: '',
+      editorState: EditorState.createEmpty()
+    };
+
+    this.focus = () => this.refs.editor.focus();
+    this.onChange = editorState => this.setState({ editorState });
+    this.onInputChange = e =>
+      this.setState({ [e.target.name]: e.target.value });
+    this.handleKeyCommand = this._handleKeyCommand.bind(this);
+    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
+    this.toggleBlockType = this._toggleBlockType.bind(this);
+    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+  }
 
   componentWillReceiveProps(nextProps, nextState) {
     const { id, title, note } = nextProps.note;
     this.setState({
       id,
-      title,
-      note
+      title
     });
   }
 
@@ -40,7 +50,7 @@ class EditNote extends Component {
   focus = () => this.refs.editor.focus();
   onChange = editorState => this.setState({ editorState });
   onInputChange = e => this.setState({ [e.target.name]: e.target.value });
-  handleKeyCommand(command, editorState) {
+  _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -48,7 +58,7 @@ class EditNote extends Component {
     }
     return false;
   }
-  mapKeyToEditorCommand(e) {
+  _mapKeyToEditorCommand(e) {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichUtils.onTab(
         e,
@@ -62,30 +72,28 @@ class EditNote extends Component {
     }
     return getDefaultKeyBinding(e);
   }
-  toggleBlockType(blockType) {
+  _toggleBlockType(blockType) {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   }
-  toggleInlineStyle(inlineStyle) {
+  _toggleInlineStyle(inlineStyle) {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
   }
   render() {
-    const { id, title, note, editorState } = this.state;
-    // let className = 'RichEditor-editor';
-    // let contentState = editorState.createWithContent(
-    //   ContentState.createFromBlockArray(convertToRaw(note.blocks))
-    // );
-    // if (!contentState.hasText()) {
-    //   if (
-    //     contentState
-    //       .getBlockMap()
-    //       .first()
-    //       .getType() !== 'unstyled'
-    //   ) {
-    //     className += ' RichEditor-hidePlaceholder';
-    //   }
-    // }
+    const { id, title, editorState } = this.state;
+    let className = 'RichEditor-editor';
+    let contentState = editorState.getCurrentContent();
+    if (!contentState.hasText()) {
+      if (
+        contentState
+          .getBlockMap()
+          .first()
+          .getType() !== 'unstyled'
+      ) {
+        className += ' RichEditor-hidePlaceholder';
+      }
+    }
     return (
       <React.Fragment>
         <form>
@@ -98,7 +106,7 @@ class EditNote extends Component {
             value={title}
             onChange={this.onInputChange}
           />
-          {/* <div className="RichEditor-root">
+          <div className="RichEditor-root">
             <BlockStyleControls
               editorState={editorState}
               onToggle={this.toggleBlockType}
@@ -120,8 +128,8 @@ class EditNote extends Component {
                 spellCheck={true}
               />
             </div>
-          </div> */}
-          <div>{JSON.stringify(note)}</div>
+          </div>
+          <div />
           <button type="submit" className="btn btn-primary">
             <i className="fa fa-save" />
           </button>
@@ -133,7 +141,8 @@ class EditNote extends Component {
 
 EditNote.propTypes = {
   id: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
+  note: PropTypes.string
 };
 
 const mapStateToProps = state => ({

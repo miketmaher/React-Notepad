@@ -25,7 +25,4 @@ export const getNote = id => async dispatch => {
     type: GET_NOTE,
     payload: res.data.data
   });
-  console.log('====================================');
-  console.log(id);
-  console.log('====================================');
 };
