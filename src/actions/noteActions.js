@@ -1,4 +1,4 @@
-import { GET_NOTES, GET_NOTE } from './types';
+import { GET_NOTES, GET_NOTE, UPDATE_NOTE } from './types';
 
 import axios from 'axios';
 
@@ -30,5 +30,18 @@ export const getNote = id => async dispatch => {
   dispatch({
     type: GET_NOTE,
     payload: note
+  });
+};
+
+export const updateNote = note => async dispatch => {
+  const res = await axios.put(`http://localhost:8080/notes/${note.id}`, note, {
+    auth: auth,
+    headers: {
+      'Access-Control-Allow-Origin': `http://localhost:8080/notes/${note.id}`
+    }
+  });
+  dispatch({
+    type: UPDATE_NOTE,
+    payload: res.data.data
   });
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getNote } from '../../actions/noteActions';
+import { getNote, updateNote } from '../../actions/noteActions';
 import {
   Editor,
   EditorState,
@@ -106,27 +106,31 @@ class EditNote extends Component {
   }
 
   compareObjects = (objA, objB) => {
-    const objAProps = Object.getOwnPropertyNames(objA);
-    const objBProps = Object.getOwnPropertyNames(objB);
-    if (objAProps.length != objBProps.length) {
+    if (JSON.stringify(objA) !== JSON.stringify(objB)) {
       return false;
+    } else {
+      return true;
     }
-
-    objAProps.forEach((elem, index) => {
-      if (elem[index] !== objBProps[index]);
-      return false;
-    });
-
-    return true;
   };
-  render() {
-    const {
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const { title, editorState } = this.state;
+    //TODO: Validation
+    const { id } = this.props.match.params;
+
+    const updatedNote = {
       id,
       title,
-      editorState,
-      isNoteChanged,
-      isTitleChanged
-    } = this.state;
+      note: convertToRaw(editorState.getCurrentContent()).blocks
+    };
+
+    this.props.updateNote(updatedNote);
+  };
+
+  render() {
+    const { title, editorState, isNoteChanged, isTitleChanged } = this.state;
     let className = 'RichEditor-editor';
     let contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
@@ -141,7 +145,7 @@ class EditNote extends Component {
     }
     return (
       <React.Fragment>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <input
             id="note-title"
             className="form-control"
@@ -192,7 +196,9 @@ class EditNote extends Component {
 EditNote.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
-  note: PropTypes.object
+  note: PropTypes.object,
+  getNote: PropTypes.func.isRequired,
+  updateNote: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -221,7 +227,8 @@ export default withRouter(
   connect(
     mapStateToProps,
     {
-      getNote
+      getNote,
+      updateNote
     }
   )(EditNote)
 );
