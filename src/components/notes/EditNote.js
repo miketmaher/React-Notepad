@@ -20,13 +20,14 @@ class EditNote extends Component {
     this.state = {
       id: '',
       title: '',
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      isTitleChanged: false,
+      isNoteChanged: false
     };
 
     this.focus = () => this.refs.editor.focus();
-    this.onChange = editorState => this.setState({ editorState });
-    this.onInputChange = e =>
-      this.setState({ [e.target.name]: e.target.value });
+    this.onChange = this._onChange.bind(this);
+    this.onInputChange = this._onInputChange.bind(this);
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
@@ -49,8 +50,30 @@ class EditNote extends Component {
   }
 
   focus = () => this.refs.editor.focus();
-  onChange = editorState => this.setState({ editorState });
-  onInputChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  _onChange = editorState => {
+    const { note } = this.props;
+    const noteBlocks = note.note.blocks;
+    const editorStateBlocks = convertToRaw(editorState.getCurrentContent())
+      .blocks;
+    if (!this.compareObjects(noteBlocks, editorStateBlocks)) {
+      this.setState({ isNoteChanged: true });
+    } else {
+      this.setState({ isNoteChanged: false });
+    }
+    this.setState({ editorState });
+  };
+
+  _onInputChange = e => {
+    const { note } = this.props;
+    if (note.title === e.target.value) {
+      this.setState({ isTitleChanged: false });
+    } else {
+      this.setState({ isTitleChanged: true });
+    }
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -81,8 +104,29 @@ class EditNote extends Component {
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
   }
+
+  compareObjects = (objA, objB) => {
+    const objAProps = Object.getOwnPropertyNames(objA);
+    const objBProps = Object.getOwnPropertyNames(objB);
+    if (objAProps.length != objBProps.length) {
+      return false;
+    }
+
+    objAProps.forEach((elem, index) => {
+      if (elem[index] !== objBProps[index]);
+      return false;
+    });
+
+    return true;
+  };
   render() {
-    const { id, title, editorState } = this.state;
+    const {
+      id,
+      title,
+      editorState,
+      isNoteChanged,
+      isTitleChanged
+    } = this.state;
     let className = 'RichEditor-editor';
     let contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
@@ -131,8 +175,13 @@ class EditNote extends Component {
             </div>
           </div>
           <div />
-          <button type="submit" className="btn btn-primary">
-            <i className="fa fa-save" />
+          <button
+            id="submit-button"
+            type="submit"
+            className="btn btn-primary"
+            disabled={!isNoteChanged && !isTitleChanged}
+          >
+            <i className="fa fa-save fa-2x" />
           </button>
         </form>
       </React.Fragment>

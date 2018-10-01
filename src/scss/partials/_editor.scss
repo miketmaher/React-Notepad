@@ -66,3 +66,15 @@
 .RichEditor-activeButton {
   color: #5890ff;
 }
+#submit-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  &:disabled {
+    background-color: #333;
+    border-color: #333;
+  }
+}
