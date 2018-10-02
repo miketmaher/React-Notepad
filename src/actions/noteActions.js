@@ -1,4 +1,10 @@
-import { GET_NOTES, GET_NOTE, UPDATE_NOTE, ADD_NOTE } from './types';
+import {
+  GET_NOTES,
+  GET_NOTE,
+  UPDATE_NOTE,
+  ADD_NOTE,
+  SET_NOTE_STATE
+} from './types';
 
 import axios from 'axios';
 
@@ -56,4 +62,15 @@ export const addNote = note => async dispatch => {
     type: ADD_NOTE,
     payload: newNote
   });
+};
+
+export const setNoteState = note => {
+  return async dispatch => {
+    return dispatch({
+      type: SET_NOTE_STATE,
+      id: note.id,
+      title: note.title,
+      text: note.text
+    });
+  };
 };

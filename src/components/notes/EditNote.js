@@ -35,7 +35,6 @@ class EditNote extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-    this.props.getNote(nextProps.match.params.id);
     const { id, title, note } = nextProps.note;
     const blocks = convertFromRaw(note);
     this.setState({
@@ -48,6 +47,14 @@ class EditNote extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getNote(id);
+    console.log(this.props);
+
+    // const blocks = convertFromRaw(this.props.note.note);
+    // this.setState({
+    //   id: this.props.id,
+    //   title: this.props.title,
+    //   editorState: EditorState.createWithContent(blocks)
+    // });
   }
 
   focus = () => this.refs.editor.focus();
