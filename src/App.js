@@ -6,6 +6,9 @@ import store from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
+import 'jquery/dist/jquery.min.js';
+import 'popper.js/dist/popper.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 import Navbar from './components/layout/Navbar';
 import Notes from './components/notes/Notes';

@@ -9,15 +9,28 @@ nav {
     padding: 0;
     height: 90vh;
     border-right: 1px solid rgba(0, 0, 0, 0.125); }
-    .dashboard .sidebar .list-group-item {
-      border-radius: 0;
-      border-right: none; }
-      .dashboard .sidebar .list-group-item h5 {
-        display: inline; }
-      .dashboard .sidebar .list-group-item .fa {
-        float: right; }
-      .dashboard .sidebar .list-group-item:first-child {
-        border-top: none; }
+    .dashboard .sidebar .list-group {
+      width: 100%; }
+      .dashboard .sidebar .list-group a {
+        color: #333; }
+        .dashboard .sidebar .list-group a .list-group-item {
+          border-radius: 0;
+          border-right: none; }
+          .dashboard .sidebar .list-group a .list-group-item h5 {
+            display: inline; }
+          .dashboard .sidebar .list-group a .list-group-item .fa {
+            float: right; }
+          .dashboard .sidebar .list-group a .list-group-item:first-child {
+            border-top: none; }
+        .dashboard .sidebar .list-group a:hover {
+          text-decoration: none;
+          outline: none;
+          border-color: #ccc;
+          box-shadow: 0 0 20px #ccc;
+          z-index: 10; }
+    @media screen and (max-width: 768px) {
+      .dashboard .sidebar {
+        height: auto; } }
 
 #note-title {
   background-color: transparent;

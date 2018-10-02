@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Note extends Component {
@@ -7,10 +7,13 @@ class Note extends Component {
     const { id, title } = this.props.note;
     return (
       <React.Fragment>
-        <h5>{title}</h5>
-        <Link to={`/note/edit/${id}`}>
-          <i className="fa fa-chevron-right" />
-        </Link>
+        <NavLink activeClassName="active" to={`/note/edit/${id}`}>
+          <li className="list-group-item">
+            <h5>
+              {title} <i className="fa fa-chevron-right" />
+            </h5>
+          </li>
+        </NavLink>
       </React.Fragment>
     );
   }

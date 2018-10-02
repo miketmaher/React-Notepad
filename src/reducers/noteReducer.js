@@ -1,10 +1,4 @@
-import {
-  GET_NOTES,
-  DELETE_NOTE,
-  ADD_NOTE,
-  GET_NOTE,
-  UPDATE_NOTE
-} from '../actions/types';
+import { GET_NOTES, ADD_NOTE, GET_NOTE, UPDATE_NOTE } from '../actions/types';
 
 const initialState = {
   notes: [],
@@ -22,11 +16,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         note: action.payload
-      };
-    case DELETE_NOTE:
-      return {
-        ...state,
-        notes: state.notes.filter(note => note.id !== action.payload)
       };
     case ADD_NOTE:
       return {

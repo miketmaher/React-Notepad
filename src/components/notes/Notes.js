@@ -13,15 +13,17 @@ class Notes extends Component {
   render() {
     const { notes } = this.props;
     return (
-      <div>
-        <ul className="list-group">
-          {notes.map(note => (
-            <li className="list-group-item">
-              <Note key={note.id} note={note} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <React.Fragment>
+        <div className="navbar-expand-md">
+          <div id="side-nav" className="collapse navbar-collapse">
+            <ul className="list-group">
+              {notes.map(note => (
+                <Note key={note.id} note={note} />
+              ))}
+            </ul>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 }

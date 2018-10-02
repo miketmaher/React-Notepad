@@ -10,18 +10,34 @@ nav {
     padding: 0;
     height: 90vh;
     border-right: 1px solid rgba(#000, 0.125);
-    .list-group-item {
-      border-radius: 0;
-      border-right: none;
-      h5 {
-        display: inline;
+    .list-group {
+      width: 100%;
+      a {
+        color: #333;
+        .list-group-item {
+          border-radius: 0;
+          border-right: none;
+          h5 {
+            display: inline;
+          }
+          .fa {
+            float: right;
+          }
+          &:first-child {
+            border-top: none;
+          }
+        }
+        &:hover {
+          text-decoration: none;
+          outline: none;
+          border-color: #ccc;
+          box-shadow: 0 0 20px #ccc;
+          z-index: 10;
+        }
       }
-      .fa {
-        float: right;
-      }
-      &:first-child {
-        border-top: none;
-      }
+    }
+    @media screen and (max-width: 768px) {
+      height: auto;
     }
   }
 }
