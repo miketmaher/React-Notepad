@@ -89,7 +89,7 @@ class AddNote extends Component {
     const { title, editorState } = this.state;
     const newNote = {
       title,
-      note: convertToRaw(editorState.getCurrentContent()).blocks
+      note: convertToRaw(editorState.getCurrentContent())
     };
     this.props.addNote(newNote);
 

@@ -10,6 +10,10 @@ class Notes extends Component {
     this.props.getNotes();
   }
 
+  componentWillReceiveProps(nextProps) {
+    nextProps.getNotes();
+  }
+
   render() {
     const { notes } = this.props;
     return (

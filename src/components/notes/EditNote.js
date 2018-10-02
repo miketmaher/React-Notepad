@@ -35,6 +35,7 @@ class EditNote extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
+    this.props.getNote(nextProps.match.params.id);
     const { id, title, note } = nextProps.note;
     const blocks = convertFromRaw(note);
     this.setState({
@@ -123,10 +124,17 @@ class EditNote extends Component {
     const updatedNote = {
       id,
       title,
-      note: convertToRaw(editorState.getCurrentContent()).blocks
+      note: convertToRaw(editorState.getCurrentContent())
     };
-
     this.props.updateNote(updatedNote);
+    this.setState({
+      name: '',
+      email: '',
+      phone: '',
+      errors: {}
+    });
+
+    this.props.history.push('/');
   };
 
   render() {
@@ -178,7 +186,6 @@ class EditNote extends Component {
               />
             </div>
           </div>
-          <div />
           <button
             id="submit-button"
             type="submit"
