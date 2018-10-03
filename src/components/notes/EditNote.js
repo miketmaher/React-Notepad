@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getNote, updateNote } from '../../actions/noteActions';
+import { getNote, updateNote, getNotes } from '../../actions/noteActions';
 import {
   Editor,
   EditorState,
@@ -34,27 +33,32 @@ class EditNote extends Component {
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
 
-  componentWillReceiveProps(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
     const { id, title, note } = nextProps.note;
     const blocks = convertFromRaw(note);
     this.setState({
       id,
       title,
-      editorState: EditorState.createWithContent(blocks)
+      editorState: EditorState.createWithContent(blocks),
+      isTitleChanged: false,
+      isNoteChanged: false
     });
   }
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getNote(id);
-    console.log(this.props);
+  }
 
-    // const blocks = convertFromRaw(this.props.note.note);
-    // this.setState({
-    //   id: this.props.id,
-    //   title: this.props.title,
-    //   editorState: EditorState.createWithContent(blocks)
-    // });
+  componentDidUpdate(prevProps) {
+    const currentParam = this.props.match.params.id;
+    if (currentParam !== prevProps.match.params.id) {
+      this.props.getNote(currentParam);
+      this.setState({
+        isTitleChanged: false,
+        isNoteChanged: false
+      });
+    }
   }
 
   focus = () => this.refs.editor.focus();
@@ -64,7 +68,10 @@ class EditNote extends Component {
     const noteBlocks = note.note.blocks;
     const editorStateBlocks = convertToRaw(editorState.getCurrentContent())
       .blocks;
-    if (!this.compareObjects(noteBlocks, editorStateBlocks)) {
+    if (
+      !this.compareObjects(noteBlocks, editorStateBlocks) &&
+      editorState.getCurrentContent().hasText()
+    ) {
       this.setState({ isNoteChanged: true });
     } else {
       this.setState({ isNoteChanged: false });
@@ -74,7 +81,7 @@ class EditNote extends Component {
 
   _onInputChange = e => {
     const { note } = this.props;
-    if (note.title === e.target.value) {
+    if (note.title === e.target.value || e.target.value === '') {
       this.setState({ isTitleChanged: false });
     } else {
       this.setState({ isTitleChanged: true });
@@ -134,13 +141,15 @@ class EditNote extends Component {
       note: convertToRaw(editorState.getCurrentContent())
     };
     this.props.updateNote(updatedNote);
-    this.setState({
-      name: '',
-      email: '',
-      phone: '',
-      errors: {}
-    });
 
+    this.setState({
+      id: '',
+      title: '',
+      editorState: EditorState.createEmpty(),
+      isTitleChanged: false,
+      isNoteChanged: false
+    });
+    this.props.getNotes();
     this.props.history.push('/');
   };
 
@@ -237,12 +246,11 @@ function getBlockStyle(block) {
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      getNote,
-      updateNote
-    }
-  )(EditNote)
-);
+export default connect(
+  mapStateToProps,
+  {
+    getNote,
+    updateNote,
+    getNotes
+  }
+)(EditNote);

@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import Note from './Note';
 import { getNotes } from '../../actions/noteActions';
 
 class Notes extends Component {
   componentDidMount() {
     this.props.getNotes();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    nextProps.getNotes();
   }
 
   render() {
