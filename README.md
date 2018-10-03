@@ -1,4 +1,4 @@
-#Project Details
+# Project Details
 
 React notepad application that uses [Draft.js](https://draftjs.org/) for rich text editng and connects to a [Hapi.js](https://hapijs.com/) service to add edit and get notes.
 
