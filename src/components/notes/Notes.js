@@ -34,7 +34,11 @@ Notes.propTypes = {
 
 const mapStateToProps = state => ({ notes: state.note.notes });
 
+const actions = {
+  getNotes
+};
+
 export default connect(
   mapStateToProps,
-  { getNotes }
+  actions
 )(Notes);

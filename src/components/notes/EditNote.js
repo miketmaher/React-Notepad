@@ -23,14 +23,7 @@ class EditNote extends Component {
       isTitleChanged: false,
       isNoteChanged: false
     };
-
     this.focus = () => this.refs.editor.focus();
-    this.onChange = this._onChange.bind(this);
-    this.onInputChange = this._onInputChange.bind(this);
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,7 +56,7 @@ class EditNote extends Component {
 
   focus = () => this.refs.editor.focus();
 
-  _onChange = editorState => {
+  onChange = editorState => {
     const { note } = this.props;
     const noteBlocks = note.note.blocks;
     const editorStateBlocks = convertToRaw(editorState.getCurrentContent())
@@ -79,7 +72,7 @@ class EditNote extends Component {
     this.setState({ editorState });
   };
 
-  _onInputChange = e => {
+  onInputChange = e => {
     const { note } = this.props;
     if (note.title === e.target.value || e.target.value === '') {
       this.setState({ isTitleChanged: false });
@@ -89,15 +82,15 @@ class EditNote extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  _handleKeyCommand(command, editorState) {
+  handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
     }
     return false;
-  }
-  _mapKeyToEditorCommand(e) {
+  };
+  mapKeyToEditorCommand = e => {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichUtils.onTab(
         e,
@@ -110,15 +103,15 @@ class EditNote extends Component {
       return;
     }
     return getDefaultKeyBinding(e);
-  }
-  _toggleBlockType(blockType) {
+  };
+  toggleBlockType = blockType => {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
-  }
-  _toggleInlineStyle(inlineStyle) {
+  };
+  toggleInlineStyle = inlineStyle => {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
-  }
+  };
 
   compareObjects = (objA, objB) => {
     if (JSON.stringify(objA) !== JSON.stringify(objB)) {
@@ -217,9 +210,7 @@ class EditNote extends Component {
 }
 
 EditNote.propTypes = {
-  id: PropTypes.string,
-  title: PropTypes.string,
-  note: PropTypes.object,
+  note: PropTypes.object.isRequired,
   getNote: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired
 };

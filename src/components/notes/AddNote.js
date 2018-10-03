@@ -20,19 +20,12 @@ class AddNote extends Component {
       editorState: EditorState.createEmpty(),
       isEmpty: true
     };
-
     this.focus = () => this.refs.editor.focus();
-    this.onChange = this._onChange.bind(this);
-    this.onInputChange = this._onInputChange.bind(this);
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
 
   focus = () => this.refs.editor.focus();
 
-  _onChange = editorState => {
+  onChange = editorState => {
     const { title } = this.state;
     this.setState({ editorState });
     if (editorState.getCurrentContent().hasText() && title !== '') {
@@ -42,7 +35,7 @@ class AddNote extends Component {
     }
   };
 
-  _onInputChange = e => {
+  onInputChange = e => {
     const { editorState } = this.state;
     this.setState({ [e.target.name]: e.target.value });
     if (editorState.getCurrentContent().hasText() && e.target.value !== '') {
@@ -52,15 +45,15 @@ class AddNote extends Component {
     }
   };
 
-  _handleKeyCommand(command, editorState) {
+  handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
     }
     return false;
-  }
-  _mapKeyToEditorCommand(e) {
+  };
+  mapKeyToEditorCommand = e => {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichUtils.onTab(
         e,
@@ -73,15 +66,15 @@ class AddNote extends Component {
       return;
     }
     return getDefaultKeyBinding(e);
-  }
-  _toggleBlockType(blockType) {
+  };
+  toggleBlockType = blockType => {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
-  }
-  _toggleInlineStyle(inlineStyle) {
+  };
+  toggleInlineStyle = inlineStyle => {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
-  }
+  };
 
   onSubmit = e => {
     e.preventDefault();
