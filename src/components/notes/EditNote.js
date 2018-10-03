@@ -212,7 +212,8 @@ class EditNote extends Component {
 EditNote.propTypes = {
   note: PropTypes.object.isRequired,
   getNote: PropTypes.func.isRequired,
-  updateNote: PropTypes.func.isRequired
+  updateNote: PropTypes.func.isRequired,
+  getNotes: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -237,11 +238,13 @@ function getBlockStyle(block) {
   }
 }
 
+const actions = {
+  getNote,
+  updateNote,
+  getNotes
+};
+
 export default connect(
   mapStateToProps,
-  {
-    getNote,
-    updateNote,
-    getNotes
-  }
+  actions
 )(EditNote);

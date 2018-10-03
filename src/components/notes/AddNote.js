@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addNote } from '../../actions/noteActions';
+import { addNote, getNotes } from '../../actions/noteActions';
 import {
   Editor,
   EditorState,
@@ -91,6 +91,7 @@ class AddNote extends Component {
       editorState: EditorState.createEmpty(),
       isEmpty: true
     });
+    this.props.getNotes();
   };
 
   render() {
@@ -179,7 +180,12 @@ AddNote.propTypes = {
   addNote: PropTypes.func.isRequired
 };
 
+const actions = {
+  addNote,
+  getNotes
+};
+
 export default connect(
   null,
-  { addNote }
+  actions
 )(AddNote);
